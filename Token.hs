@@ -47,15 +47,15 @@ process :: [T.Text] -- ^ text parts
 process []      = []
 process [text]
   | text == "*" = [Asterisk]
-	| text == "?" = [Question 1]
-	| otherwise   = [Plain text]
+  | text == "?" = [Question 1]
+  | otherwise   = [Plain text]
 process (x:y:ts)
   | x == "*"               = Asterisk   : process (y:ts)
-	| x == "?"               = Question 1 : process (y:ts)
-	| x == "\\" && y == "*"  = Plain "*"  : process ts
-	| x == "\\" && y == "?"  = Plain "?"  : process ts
-	| x == "\\" && y == "\\" = Plain "\\" : process ts
-	| otherwise              = Plain x    : process (y:ts)
+  | x == "?"               = Question 1 : process (y:ts)
+  | x == "\\" && y == "*"  = Plain "*"  : process ts
+  | x == "\\" && y == "?"  = Plain "?"  : process ts
+  | x == "\\" && y == "\\" = Plain "\\" : process ts
+  | otherwise              = Plain x    : process (y:ts)
 
 -- | Chop up text into tokens.
 tokenize :: T.Text  -- ^ text
