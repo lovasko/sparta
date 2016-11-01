@@ -41,7 +41,7 @@ simplify (t                       : ts) = t : simplify ts
 simplify []                             = []
 
 -- | Process text parts into tokens, while implementing the backslash
--- escaping rules. 
+-- escaping rules.
 process :: [T.Text] -- ^ text parts
         -> [Token]  -- ^ tokens
 process []      = []

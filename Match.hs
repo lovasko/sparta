@@ -23,7 +23,7 @@ match (Question n:ts) text
   | T.length text < n = False
   | otherwise         = match ts (T.drop n text)
 
-match (Asterisk:ts) text 
+match (Asterisk:ts) text
   | T.null text = match ts text
   | otherwise   = match (Asterisk:ts) (T.drop 1 text) ||
                   match ts            text
