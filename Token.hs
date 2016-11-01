@@ -8,7 +8,6 @@ module Token
 
 import Data.List.Split
 import Data.Monoid
-import Data.Word
 import qualified Data.Text as T
 
 -- | Table cell contents.
@@ -23,7 +22,7 @@ data Token
 -- in this function are rather arbitrary and should be reasoned about in
 -- the future.
 complexity :: [Token] -- ^ tokens
-           -> Word64  -- ^ complexity
+           -> Integer -- ^ complexity
 complexity [] = 0
 complexity (t:ts) = rate t + complexity ts
   where
