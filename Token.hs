@@ -3,7 +3,6 @@
 module Token
 ( Token(..)
 , tokenize
-, complexity
 ) where
 
 import Data.List.Split
@@ -16,19 +15,6 @@ data Token
   | Asterisk     -- ^ any number of wildcard characters
   | Question Int -- ^ exact number of wildcard characters
   deriving (Show)
-
--- | Rate the complexity of a set of tokens.
--- The higher the rate, the more complex the tokens are. Constants used
--- in this function are rather arbitrary and should be reasoned about in
--- the future.
-complexity :: [Token] -- ^ tokens
-           -> Integer -- ^ complexity
-complexity [] = 0
-complexity (t:ts) = rate t + complexity ts
-  where
-    rate (Plain _)    = 0
-    rate (Question _) = 1
-    rate Asterisk     = 5
 
 -- | Merge adjacent compatible tokens into one.
 simplify :: [Token] -- ^ old tokens
