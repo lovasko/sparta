@@ -22,6 +22,14 @@ build cells
     colcnt    = length $ head cells
     columns   = replicate colcnt (Column S.empty 0)
 
+ordering :: [Columns]
+         -> Table
+ordering cols = Table ordCols
+  where
+    ordCols = sortBy compOrd numCols
+    numCols = zip [1..] cols
+    compOrd (_, Column _ c1) (_, Column _ c2) = compare c1 c2
+
 -- | Parse cell content and append it to a column.
 columnAppend :: Column -- ^ old column
              -> T.Text -- ^ cell content

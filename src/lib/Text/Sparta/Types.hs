@@ -1,13 +1,18 @@
 module Types
 ( Column(..)
 , Table(..)
+, Token(..)
 ) where
 
 import Data.List
-
 import qualified Data.Sequence as S
+import qualified Data.Text as T
 
-import Token
+data Token
+  = Plain T.Text -- ^ simple plaintext
+  | Asterisk     -- ^ any number of wildcard characters
+  | Question Int -- ^ exact number of wildcard characters
+  deriving (Show)
 
 -- | Table column.
 data Column = Column
@@ -15,11 +20,7 @@ data Column = Column
               Integer         -- ^ complexity rating
 
 -- | Data table.
-data Table = Table [Column]
-
--- | Pretty-printing of the Table type.
-instance Show Table where
-  show (Table cols) = concat $ intersperse "\n" (["Table"] ++ map show cols)
+type Table = [(Int, Column)]
 
 -- | Pretty-printing of the Column type.
 instance Show Column where

@@ -1,20 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Token
-( Token(..)
-, tokenize
+( tokenize
 ) where
 
 import Data.List.Split
 import Data.Monoid
 import qualified Data.Text as T
 
--- | Table cell contents.
-data Token
-  = Plain T.Text -- ^ simple plaintext
-  | Asterisk     -- ^ any number of wildcard characters
-  | Question Int -- ^ exact number of wildcard characters
-  deriving (Show)
+import Types
 
 -- | Merge adjacent compatible tokens into one.
 simplify :: [Token] -- ^ old tokens
