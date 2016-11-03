@@ -1,4 +1,4 @@
-module Sparta.Match
+module Text.Sparta.Match
 ( match
 ) where
 

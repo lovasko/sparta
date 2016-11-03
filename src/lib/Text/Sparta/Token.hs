@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Token
+module Text.Sparta.Token
 ( tokenize
 ) where
 

@@ -1,4 +1,4 @@
-module Types
+module Text.Sparta.Types
 ( Column(..)
 , Table(..)
 , Token(..)

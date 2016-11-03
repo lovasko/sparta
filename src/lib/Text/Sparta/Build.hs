@@ -1,4 +1,4 @@
-module Build
+module Text.Sparta.Build
 ( build
 ) where
 
