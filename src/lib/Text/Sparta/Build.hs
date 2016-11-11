@@ -34,14 +34,14 @@ compSorted = sortBy (\c1 c2 -> compare (columnRate c1) (columnRate c2))
 columnAppend :: T.Text -- ^ cell content
              -> Column -- ^ old column
              -> Column -- ^ new column
-columnAppend text col = col S.|> (tokenize text)
+columnAppend text col = col S.|> tokenize text
 
 -- | Rate the complexity of a set of tokens. The higher the rate, the more
 -- complex the tokens are. Constants used in this function are rather
 -- arbitrary and should be reasoned about in the future.
 rate :: [Token] -- ^ tokens
      -> Integer -- ^ complexity
-rate ts = foldr (\t s -> s + complexity t) 0 ts
+rate = foldr (\t s -> s + complexity t) 0
   where
     complexity (Plain _)    = 0
     complexity (Question _) = 1
