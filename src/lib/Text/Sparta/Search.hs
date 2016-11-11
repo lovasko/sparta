@@ -32,7 +32,7 @@ sieve (x:xs) = headMay $ foldr secondSieve (firstSieve x) xs
 pairs :: Table -- ^ table
       -> Query -- ^ query
       -> [(T.Text, Column)]
-pairs cols query = catMaybes $ map findPair cols
+pairs cols query = mapMaybe findPair cols
   where
     findPair (n, col) = fmap (flip (,) col . snd) (find ((== n) . fst) query)
 
@@ -59,7 +59,7 @@ queryInvalid :: Query -- ^ query
              -> Bool  -- ^ decision
 queryInvalid query cols = outOfRange || duplicates
   where
-    outOfRange = any (\i -> i < 0 || i > (length cols)) indices
+    outOfRange = any (\i -> i < 0 || i > length cols) indices
     duplicates = length indices /= length (nub indices)
     indices    = map fst query
 
