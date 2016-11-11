@@ -15,9 +15,15 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src/lib
   exposed-modules:     Text.Sparta
-  build-depends:       base,
-                       text,
-                       containers
+  other-modules:       Text.Sparta.Build
+                     , Text.Sparta.Token
+                     , Text.Sparta.Types
+                     , Text.Sparta.Search
+  build-depends:       base >= 4.7 && < 5
+                     , containers
+                     , safe
+                     , split
+                     , text
   default-language:    Haskell2010
 
 executable sparta-cli
