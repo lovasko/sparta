@@ -21,8 +21,8 @@ simplify (t                       : ts) = t : simplify ts
 simplify []                             = []
 
 -- | Convert a list of tokens into their textual representation.
-textify :: [Token]
-        -> T.Text
+textify :: [Token] -- ^ tokens
+        -> T.Text  -- ^ text
 textify [] = T.empty
 textify (Plain text:ts) = text              <> textify ts
 textify (Question n:ts) = T.replicate n "?" <> textify ts
