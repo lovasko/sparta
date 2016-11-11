@@ -3,7 +3,6 @@ module Text.Sparta.Build
 ) where
 
 import Data.List
-
 import qualified Data.Foldable as F
 import qualified Data.Sequence as S
 import qualified Data.Text as T
