@@ -67,19 +67,15 @@ queryInvalid query cols = outOfRange || duplicates
 match :: [Token] -- ^ tokens
       -> T.Text  -- ^ plain text
       -> Bool    -- ^ decision
-match [] text = T.null text
-
+match [] text               = T.null text
 match (Plain plain:ts) text
   | T.null text             = False
   | T.isPrefixOf plain text = match ts (T.drop (T.length plain) text)
   | otherwise               = False
-
 match (Question n:ts) text
-  | T.length text < n = False
-  | otherwise         = match ts (T.drop n text)
-
-match (Asterisk:ts) text
-  | T.null text = match ts text
-  | otherwise   = match (Asterisk:ts) (T.drop 1 text) ||
-                  match ts            text
+  | T.length text < n       = False
+  | otherwise               = match ts (T.drop n text)
+match us@(Asterisk:ts) text
+  | T.null text             = match ts text
+  | otherwise               = match us (T.tail text) || match ts text
 
