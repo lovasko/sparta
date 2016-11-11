@@ -1,14 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Text.Sparta.Token
-( tokenize
+( textify
+, tokenize
 ) where
 
 import Data.List.Split
 import Data.Monoid
 import qualified Data.Text as T
 
-import Types
+import Text.Sparta.Types
 
 -- | Merge adjacent compatible tokens into one.
 simplify :: [Token] -- ^ old tokens
@@ -18,6 +19,14 @@ simplify (Question n : Question m : ts) = simplify (Question (n + m) : ts)
 simplify (Asterisk   : Asterisk   : ts) = simplify (Asterisk : ts)
 simplify (t                       : ts) = t : simplify ts
 simplify []                             = []
+
+-- | Convert a list of tokens into their textual representation.
+textify :: [Token]
+        -> T.Text
+textify [] = T.empty
+textify (Plain text:ts) = text              <> textify ts
+textify (Question n:ts) = T.replicate n "?" <> textify ts
+textify (Asterisk  :ts) = "*"               <> textify ts
 
 -- | Process text parts into tokens, while implementing the backslash
 -- escaping rules.

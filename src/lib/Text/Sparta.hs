@@ -1,5 +1,6 @@
 module Text.Sparta
-( Table(..)
+( Query
+, Table
 , build
 , search
 ) where
