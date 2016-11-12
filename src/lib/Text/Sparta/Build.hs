@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Text.Sparta.Build
 ( build
 ) where
@@ -11,13 +13,13 @@ import Text.Sparta.Token
 import Text.Sparta.Types
 
 -- | Build a table from textual data.
-build :: [[T.Text]]  -- ^ cells
-      -> Maybe Table -- ^ table
-build []   = Nothing
-build [[]] = Nothing
+build :: [[T.Text]]          -- ^ cells
+      -> Either T.Text Table -- ^ error message | table
+build []   = Left "No rows provided"
+build [[]] = Right []
 build cells
-  | same (map length cells) = Just cols3
-  | otherwise               = Nothing
+  | same (map length cells) = Right cols3
+  | otherwise               = Left "Not all rows have the same amount of cells"
   where
     cols1 = replicate (length $ head cells) S.empty
     cols2 = foldr (zipWith columnAppend) cols1 cells
