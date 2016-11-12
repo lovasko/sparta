@@ -2,9 +2,9 @@ module Text.Sparta.Search
 ( search
 ) where
 
-import Safe
 import Data.List
 import Data.Maybe
+import Safe
 import qualified Data.Sequence as S
 import qualified Data.Text as T
 
