@@ -12,7 +12,7 @@ import Text.Sparta.Token
 import Text.Sparta.Types
 
 -- | Examine only certain indices of the column.
-secondSieve :: (T.Text, Column) -- ^ column & key
+secondSieve :: (T.Text, Column) -- ^ key & column
             -> [Int]            -- ^ old indices
             -> [Int]            -- ^ new indices
 secondSieve (text, col) = filter (match text . S.index col)
@@ -43,21 +43,21 @@ selectRow :: Table    -- ^ table
 selectRow cols n = map (textify . flip S.index n . snd) cols
 
 -- | Search in the table given a list of query keys.
-search :: Query          -- ^ query
-       -> Table          -- ^ table
+search :: Table          -- ^ table
+       -> Query          -- ^ query
        -> Maybe [T.Text] -- ^ result
-search []    _     = Nothing
-search query cols
-  | queryInvalid query cols = Nothing
+search _     []             = Nothing
+search cols query
+  | queryInvalid cols query = Nothing
   | otherwise               = fmap (selectRow cols) (sieve (pairs cols query))
 
 -- | Determine whether the query is invalid. This happens if a query
 -- contains indices outside of the table range or if one column number
 -- is used more than once.
-queryInvalid :: Query -- ^ query
-             -> Table -- ^ table
+queryInvalid :: Table -- ^ table
+             -> Query -- ^ query
              -> Bool  -- ^ decision
-queryInvalid query cols = outOfRange || duplicates
+queryInvalid cols query = outOfRange || duplicates
   where
     outOfRange = any (\i -> i < 0 || i > length cols) indices
     duplicates = length indices /= length (nub indices)
