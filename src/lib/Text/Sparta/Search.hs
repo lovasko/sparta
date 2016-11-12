@@ -15,12 +15,12 @@ import Text.Sparta.Types
 secondSieve :: (T.Text, Column) -- ^ column & key
             -> [Int]            -- ^ old indices
             -> [Int]            -- ^ new indices
-secondSieve (text, col) = filter (\i -> match (S.index col i) text)
+secondSieve (text, col) = filter (match text . S.index col)
 
 -- | Examine all indices of the column.
 firstSieve :: (T.Text, Column) -- ^ key & column
            -> [Int]            -- ^ indices
-firstSieve (text, col) = S.findIndicesL (flip match text) col
+firstSieve (text, col) = S.findIndicesL (match text) col
 
 -- | Combine the first and second sieves over a list of pairings.
 sieve :: [(T.Text, Column)] -- ^ keys & columns
@@ -64,18 +64,18 @@ queryInvalid query cols = outOfRange || duplicates
     indices    = map fst query
 
 -- | Match a list of tokens against a plain text.
-match :: [Token] -- ^ tokens
-      -> T.Text  -- ^ plain text
+match :: T.Text  -- ^ plain text
+      -> [Token] -- ^ tokens
       -> Bool    -- ^ decision
-match [] text               = T.null text
-match (Plain plain:ts) text
+match text []               = T.null text
+match text (Plain plain:ts)
   | T.null text             = False
-  | T.isPrefixOf plain text = match ts (T.drop (T.length plain) text)
+  | T.isPrefixOf plain text = match (T.drop (T.length plain) text) ts
   | otherwise               = False
-match (Question n:ts) text
+match text (Question n:ts)
   | T.length text < n       = False
-  | otherwise               = match ts (T.drop n text)
-match us@(Asterisk:ts) text
-  | T.null text             = match ts text
-  | otherwise               = match us (T.tail text) || match ts text
+  | otherwise               = match (T.drop n text) ts
+match text us@(Asterisk:ts)
+  | T.null text             = match text ts
+  | otherwise               = match (T.tail text) us || match text us
 
