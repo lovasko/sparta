@@ -11,6 +11,15 @@ import qualified Data.Text as T
 import Text.Sparta.Token
 import Text.Sparta.Types
 
+-- | Search in the table given a list of query keys.
+search :: Table          -- ^ table
+       -> Query          -- ^ query
+       -> Maybe [T.Text] -- ^ result
+search _    []              = Nothing
+search cols query
+  | queryInvalid cols query = Nothing
+  | otherwise               = fmap (selectRow cols) (sieve (pairs cols query))
+
 -- | Examine only certain indices of the column.
 secondSieve :: (T.Text, Column) -- ^ key & column
             -> [Int]            -- ^ old indices
@@ -41,15 +50,6 @@ selectRow :: Table    -- ^ table
           -> Int      -- ^ row number
           -> [T.Text] -- ^ row content
 selectRow cols n = map (textify . flip S.index n . snd) cols
-
--- | Search in the table given a list of query keys.
-search :: Table          -- ^ table
-       -> Query          -- ^ query
-       -> Maybe [T.Text] -- ^ result
-search _     []             = Nothing
-search cols query
-  | queryInvalid cols query = Nothing
-  | otherwise               = fmap (selectRow cols) (sieve (pairs cols query))
 
 -- | Determine whether the query is invalid. This happens if a query
 -- contains indices outside of the table range or if one column number
