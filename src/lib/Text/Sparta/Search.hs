@@ -1,10 +1,11 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Text.Sparta.Search
 ( search
 ) where
 
-import Data.List
-import Data.Maybe
-import Safe
+import Data.List (find, nub)
+import Data.Maybe (mapMaybe)
 import qualified Data.Sequence as S
 import qualified Data.Text as T
 
@@ -12,30 +13,28 @@ import Text.Sparta.Token
 import Text.Sparta.Types
 
 -- | Search in the table given a list of query keys.
-search :: Table          -- ^ table
-       -> Query          -- ^ query
-       -> Maybe [T.Text] -- ^ result
-search _    []              = Nothing
+search :: Table                    -- ^ table
+       -> Query                    -- ^ query
+       -> Either T.Text [[T.Text]] -- ^ results
+search _    [] = Left "Empty query"
 search cols query
-  | queryInvalid cols query = Nothing
-  | otherwise               = fmap (selectRow cols) (sieve (pairs cols query))
+  | outOfRange = Left "Query indices out of range"
+  | duplicates = Left "Query indices contain duplicates"
+  | otherwise  = Right $ map (selectRow cols) (sieve (pairs cols query))
+  where
+    outOfRange = any (\i -> i < 0 || i > length cols) indices
+    duplicates = length indices /= length (nub indices)
+    indices    = map fst query
 
--- | Examine only certain indices of the column.
-secondSieve :: (T.Text, Column) -- ^ key & column
-            -> [Int]            -- ^ old indices
-            -> [Int]            -- ^ new indices
-secondSieve (text, col) = filter (match text . S.index col)
-
--- | Examine all indices of the column.
-firstSieve :: (T.Text, Column) -- ^ key & column
-           -> [Int]            -- ^ indices
-firstSieve (text, col) = S.findIndicesL (match text) col
-
--- | Combine the first and second sieves over a list of pairings.
+-- | Match each key over corresponding column and filter out the numbers
+-- of rows that match keys in all columns.
 sieve :: [(T.Text, Column)] -- ^ keys & columns
-      -> Maybe Int          -- ^ possible row number
-sieve []     = Nothing
-sieve (x:xs) = headMay $ foldr secondSieve (firstSieve x) xs
+      -> [Int]              -- ^ possible row number
+sieve []     = []
+sieve (x:xs) = foldr secondSieve (firstSieve x) xs
+  where
+    firstSieve  (text, col) = S.findIndicesL (match text) col
+    secondSieve (text, col) = filter (match text . S.index col)
 
 -- | Create a column-wise join between the query and the table columns.
 pairs :: Table -- ^ table
@@ -50,18 +49,6 @@ selectRow :: Table    -- ^ table
           -> Int      -- ^ row number
           -> [T.Text] -- ^ row content
 selectRow cols n = map (textify . flip S.index n . snd) cols
-
--- | Determine whether the query is invalid. This happens if a query
--- contains indices outside of the table range or if one column number
--- is used more than once.
-queryInvalid :: Table -- ^ table
-             -> Query -- ^ query
-             -> Bool  -- ^ decision
-queryInvalid cols query = outOfRange || duplicates
-  where
-    outOfRange = any (\i -> i < 0 || i > length cols) indices
-    duplicates = length indices /= length (nub indices)
-    indices    = map fst query
 
 -- | Match a list of tokens against a plain text.
 match :: T.Text  -- ^ plain text
