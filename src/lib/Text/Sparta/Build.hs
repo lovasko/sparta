@@ -1,3 +1,19 @@
+{- |
+Module      : Text.Sparta.Build
+Description : Data structure initialization
+Copyright   : (c) Daniel Lovasko, 2016
+License     : BSD3
+
+Maintainer  : Daniel Lovasko <daniel.lovasko@gmail.com>
+Stability   : stable
+Portability : portable
+
+Implementation of the table building algorithm that creates the table
+columns and orders them by their respective complexities. The complexity
+function favors cells without any wild-cards, as they are most likely to
+filter out most entries.
+-}
+
 {-# LANGUAGE OverloadedStrings #-}
 
 module Text.Sparta.Build

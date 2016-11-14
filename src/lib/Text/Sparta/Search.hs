@@ -1,3 +1,19 @@
+{- |
+Module      : Text.Sparta.Search
+Description : Search algorithm
+Copyright   : (c) Daniel Lovasko, 2016
+License     : BSD3
+
+Maintainer  : Daniel Lovasko <daniel.lovasko@gmail.com>
+Stability   : stable
+Portability : portable
+
+Implementation of the search algorithm that performs the pairing of
+columns and query keys and returns a list of all matching rows. It makes
+use of the fact that the columns sorted ascendingly by complexity and
+therefore evalues the query in that order.
+-}
+
 {-# LANGUAGE OverloadedStrings #-}
 
 module Text.Sparta.Search

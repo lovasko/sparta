@@ -1,3 +1,17 @@
+{- |
+Module      : Text.Sparta.Token
+Description : Matching pattern tokenization
+Copyright   : (c) Daniel Lovasko, 2016
+License     : BSD3
+
+Maintainer  : Daniel Lovasko <daniel.lovasko@gmail.com>
+Stability   : stable
+Portability : portable
+
+Implementation of the search pattern parsing and tokenization along with
+utility functions to simplify the rules and render back into a text.
+-}
+
 {-# LANGUAGE OverloadedStrings #-}
 
 module Text.Sparta.Token

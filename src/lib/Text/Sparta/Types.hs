@@ -1,3 +1,16 @@
+{- |
+Module      : Text.Sparta.Types
+Description : Type definitions
+Copyright   : (c) Daniel Lovasko, 2016
+License     : BSD3
+
+Maintainer  : Daniel Lovasko <daniel.lovasko@gmail.com>
+Stability   : stable
+Portability : portable
+
+Definitions of all types used throughout the module.
+-}
+
 module Text.Sparta.Types
 ( Column
 , Query
