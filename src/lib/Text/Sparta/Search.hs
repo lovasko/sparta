@@ -17,15 +17,15 @@ search :: Table                    -- ^ table
        -> Query                    -- ^ query
        -> Either T.Text [[T.Text]] -- ^ results
 search _    [] = Left "Empty query"
-search cols query
+search table query
   | outOfRange = Left "Query indices out of range"
   | duplicates = Left "Query indices contain duplicates"
-  | otherwise  = Right $ map selectRow (sieve (pairs cols query))
+  | otherwise  = Right $ map selectRow (sieve (pairs table query))
   where
-    outOfRange  = any (\i -> i < 0 || i > length cols) indices
+    outOfRange  = any (\i -> i < 0 || i > length table) indices
     duplicates  = length indices /= length (nub indices)
     indices     = map fst query
-    selectRow n = map (textify . flip S.index n . snd) cols
+    selectRow n = map (textify . flip S.index n . snd) table
 
 -- | Match each key over corresponding column and filter out the numbers
 -- of rows that match keys in all columns.
@@ -41,7 +41,7 @@ sieve (x:xs) = foldr secondSieve (firstSieve x) xs
 pairs :: Table              -- ^ table
       -> Query              -- ^ query
       -> [(T.Text, Column)] -- ^ keys & columns
-pairs cols query = mapMaybe findPair cols
+pairs table query = mapMaybe findPair table
   where
     findPair (n, col) = fmap (createPair col) (findMatch n)
     createPair col    = flip (,) col . snd
