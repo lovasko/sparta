@@ -38,12 +38,14 @@ sieve (x:xs) = foldr secondSieve (firstSieve x) xs
     secondSieve (text, col) = filter (match text . S.index col)
 
 -- | Create a column-wise join between the query and the table columns.
-pairs :: Table -- ^ table
-      -> Query -- ^ query
-      -> [(T.Text, Column)]
+pairs :: Table              -- ^ table
+      -> Query              -- ^ query
+      -> [(T.Text, Column)] -- ^ keys & columns
 pairs cols query = mapMaybe findPair cols
   where
-    findPair (n, col) = fmap (flip (,) col . snd) (find ((== n) . fst) query)
+    findPair (n, col) = fmap (createPair col) (findMatch n)
+    createPair col    = flip (,) col . snd
+    findMatch n       = find ((== n) . fst) query
 
 -- | Match a list of tokens against a plain text.
 match :: T.Text  -- ^ plain text
