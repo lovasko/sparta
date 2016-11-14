@@ -20,11 +20,12 @@ search _    [] = Left "Empty query"
 search cols query
   | outOfRange = Left "Query indices out of range"
   | duplicates = Left "Query indices contain duplicates"
-  | otherwise  = Right $ map (selectRow cols) (sieve (pairs cols query))
+  | otherwise  = Right $ map selectRow (sieve (pairs cols query))
   where
-    outOfRange = any (\i -> i < 0 || i > length cols) indices
-    duplicates = length indices /= length (nub indices)
-    indices    = map fst query
+    outOfRange  = any (\i -> i < 0 || i > length cols) indices
+    duplicates  = length indices /= length (nub indices)
+    indices     = map fst query
+    selectRow n = map (textify . flip S.index n . snd) cols
 
 -- | Match each key over corresponding column and filter out the numbers
 -- of rows that match keys in all columns.
@@ -43,12 +44,6 @@ pairs :: Table -- ^ table
 pairs cols query = mapMaybe findPair cols
   where
     findPair (n, col) = fmap (flip (,) col . snd) (find ((== n) . fst) query)
-
--- | Select a row from the table.
-selectRow :: Table    -- ^ table
-          -> Int      -- ^ row number
-          -> [T.Text] -- ^ row content
-selectRow cols n = map (textify . flip S.index n . snd) cols
 
 -- | Match a list of tokens against a plain text.
 match :: T.Text  -- ^ plain text
