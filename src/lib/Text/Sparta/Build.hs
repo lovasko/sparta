@@ -35,38 +35,25 @@ build []   = Left "No rows provided"
 build [[]] = Right []
 build cells
   | same (map length cells) = Right cols3
-  | otherwise               = Left "Not all rows have the same amount of cells"
+  | otherwise               = Left "Non-identical row sizes"
   where
-    cols1 = replicate (length $ head cells) S.empty
-    cols2 = foldr (zipWith columnAppend) cols1 cells
-    cols3 = compSorted $ zip [1..] cols2
+    cols1   = replicate (length $ head cells) S.empty -- create empty columns
+    cols2   = foldr (zipWith append) cols1 cells      -- append cells
+    cols3   = rateSort $ zip [1..] cols2              -- sort by complexity
+    same xs = and $ zipWith (==) xs (tail xs)
+    append  = flip (S.|>) . tokenize
 
--- | Return columns sorted by the complexity of each.
-compSorted :: [(Int, Column)] -- ^ columns
-           -> [(Int, Column)] -- ^ sorted columns
-compSorted = sortBy (\c1 c2 -> compare (columnRate c1) (columnRate c2))
-  where columnRate = F.sum . fmap rate . snd
-
--- | Parse cell content and append it to a column.
-columnAppend :: T.Text -- ^ cell content
-             -> Column -- ^ old column
-             -> Column -- ^ new column
-columnAppend text col = col S.|> tokenize text
-
--- | Rate the complexity of a set of tokens. The higher the rate, the more
--- complex the tokens are. Constants used in this function are rather
--- arbitrary and should be reasoned about in the future.
-rate :: [Token] -- ^ tokens
-     -> Integer -- ^ complexity
-rate = foldr (\t s -> s + complexity t) 0
+-- | Return columns sorted by the complexity of each. The higher the rate,
+-- the more broader the domain set of the tokens is. Constants used in
+-- this function are rather arbitrary and should be reasoned about in the
+-- future.
+rateSort :: [(Int, Column)] -- ^ columns
+         -> [(Int, Column)] -- ^ sorted columns
+rateSort = sortBy (\c1 c2 -> compare (columnRate c1) (columnRate c2))
   where
-    complexity (Plain _)    = 0
-    complexity (Question _) = 1
-    complexity Asterisk     = 5
-
--- | Find out if all elements of a list are the same.
-same :: (Eq a)
-     => [a]  -- ^ list
-     -> Bool -- ^ decision
-same xs = and $ zipWith (==) xs (tail xs)
+    columnRate        = F.sum . fmap tokensRate . snd
+    tokensRate        = sum . map rate
+    rate (Plain _)    = 0 :: Integer
+    rate (Question _) = 1 :: Integer
+    rate Asterisk     = 5 :: Integer
 
