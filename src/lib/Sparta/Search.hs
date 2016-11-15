@@ -1,5 +1,5 @@
 {- |
-Module      : Text.Sparta.Search
+Module      : Sparta.Search
 Description : Search algorithm
 Copyright   : (c) Daniel Lovasko, 2016
 License     : BSD3
@@ -16,7 +16,7 @@ therefore evalues the query in that order.
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Text.Sparta.Search
+module Sparta.Search
 ( search
 ) where
 
@@ -25,8 +25,8 @@ import Data.Maybe (mapMaybe)
 import qualified Data.Sequence as S
 import qualified Data.Text as T
 
-import Text.Sparta.Token
-import Text.Sparta.Types
+import Sparta.Token
+import Sparta.Types
 
 -- | Search in the table given a list of query keys.
 search :: Table                    -- ^ table

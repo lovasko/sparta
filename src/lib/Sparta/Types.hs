@@ -1,5 +1,5 @@
 {- |
-Module      : Text.Sparta.Types
+Module      : Sparta.Types
 Description : Type definitions
 Copyright   : (c) Daniel Lovasko, 2016
 License     : BSD3
@@ -11,7 +11,7 @@ Portability : portable
 Definitions of all types used throughout the module.
 -}
 
-module Text.Sparta.Types
+module Sparta.Types
 ( Column
 , Query
 , Table

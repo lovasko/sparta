@@ -1,5 +1,5 @@
 {- |
-Module      : Text.Sparta.Build
+Module      : Sparta.Build
 Description : Data structure initialization
 Copyright   : (c) Daniel Lovasko, 2016
 License     : BSD3
@@ -16,7 +16,7 @@ filter out most entries.
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Text.Sparta.Build
+module Sparta.Build
 ( build
 ) where
 
@@ -25,8 +25,8 @@ import qualified Data.Foldable as F
 import qualified Data.Sequence as S
 import qualified Data.Text as T
 
-import Text.Sparta.Token
-import Text.Sparta.Types
+import Sparta.Token
+import Sparta.Types
 
 -- | Build a table from textual data.
 build :: [[T.Text]]          -- ^ cells

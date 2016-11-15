@@ -14,11 +14,11 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src/lib
-  exposed-modules:     Text.Sparta
-  other-modules:       Text.Sparta.Build
-                     , Text.Sparta.Token
-                     , Text.Sparta.Types
-                     , Text.Sparta.Search
+  exposed-modules:     Sparta
+  other-modules:       Sparta.Build
+                     , Sparta.Token
+                     , Sparta.Types
+                     , Sparta.Search
   build-depends:       base >= 4.7 && < 5
                      , containers
                      , safe

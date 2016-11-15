@@ -1,5 +1,5 @@
 {- |
-Module      : Text.Sparta
+Module      : Sparta
 Description : Sparse table database
 Copyright   : (c) Daniel Lovasko, 2016
 License     : BSD3
@@ -20,14 +20,14 @@ This module serves as a front-end import that only re-exports the public
 API of the project.
 -}
 
-module Text.Sparta
+module Sparta
 ( Query  -- *
 , Table  -- *
 , build  -- [[T.Text]] -> Either T.Text Table
 , search -- Table -> Query -> Either T.Text [[T.Text]]
 ) where
 
-import Text.Sparta.Build
-import Text.Sparta.Search
-import Text.Sparta.Types
+import Sparta.Build
+import Sparta.Search
+import Sparta.Types
 

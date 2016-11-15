@@ -1,5 +1,5 @@
 {- |
-Module      : Text.Sparta.Token
+Module      : Sparta.Token
 Description : Matching pattern tokenization
 Copyright   : (c) Daniel Lovasko, 2016
 License     : BSD3
@@ -14,7 +14,7 @@ utility functions to simplify the rules and render back into a text.
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Text.Sparta.Token
+module Sparta.Token
 ( textify
 , tokenize
 ) where
@@ -23,7 +23,7 @@ import Data.List.Split
 import Data.Monoid
 import qualified Data.Text as T
 
-import Text.Sparta.Types
+import Sparta.Types
 
 -- | Merge adjacent compatible tokens into one.
 simplify :: [Token] -- ^ old tokens
