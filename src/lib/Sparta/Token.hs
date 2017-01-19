@@ -64,4 +64,3 @@ tokenize :: T.Text  -- ^ text
          -> [Token] -- ^ tokens
 tokenize text = simplify $ process $ map T.pack $ filter (not . null) parts
   where parts = (split . oneOf) ['?', '*', '\\'] (T.unpack text)
-

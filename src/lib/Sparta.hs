@@ -30,4 +30,3 @@ module Sparta
 import Sparta.Build
 import Sparta.Search
 import Sparta.Types
-

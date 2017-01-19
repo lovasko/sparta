@@ -36,4 +36,3 @@ data Token
 
 -- | Table defined as a list of numbered columns.
 type Table = [(Int, Column)]
-

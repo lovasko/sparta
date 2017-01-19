@@ -56,4 +56,3 @@ rateSort = sortBy (\c1 c2 -> compare (columnRate c1) (columnRate c2))
     rate (Plain _)    = 0 :: Integer
     rate (Question _) = 1 :: Integer
     rate Asterisk     = 5 :: Integer
-

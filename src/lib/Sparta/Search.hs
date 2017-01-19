@@ -78,4 +78,3 @@ match text (Question n:ts)
 match text us@(Asterisk:ts)
   | T.null text             = match text ts
   | otherwise               = match (T.tail text) us || match text us
-
