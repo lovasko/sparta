@@ -21,6 +21,7 @@ module Sparta.Types
 import qualified Data.Sequence as S
 import qualified Data.Text as T
 
+
 -- | Table column defined as a sequence of rows, each row represented
 -- as a list of pattern tokens.
 type Column = S.Seq [Token]

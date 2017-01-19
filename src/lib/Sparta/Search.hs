@@ -28,6 +28,7 @@ import qualified Data.Text as T
 import Sparta.Token
 import Sparta.Types
 
+
 -- | Search in the table given a list of query keys.
 search :: Table                    -- ^ table
        -> Query                    -- ^ query

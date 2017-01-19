@@ -25,6 +25,7 @@ import qualified Data.Text as T
 
 import Sparta.Types
 
+
 -- | Merge adjacent compatible tokens into one.
 simplify :: [Token] -- ^ old tokens
          -> [Token] -- ^ new tokens

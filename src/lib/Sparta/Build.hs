@@ -28,6 +28,7 @@ import qualified Data.Text as T
 import Sparta.Token
 import Sparta.Types
 
+
 -- | Build a table from textual data.
 build :: [[T.Text]]          -- ^ cells
       -> Either T.Text Table -- ^ error message | table
