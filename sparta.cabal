@@ -1,13 +1,16 @@
 name:                sparta
-version:             0.1.0.0
-synopsis:            Sparse Table
-description:         Sparse Table Library & Tooling
+version:             1.0.0
+synopsis:            Sparse Table Query Engine
+description:         Sparta implements the sparse table data structure, which
+                     enables the definition of generally applicable rules with
+                     simple specification of exceptions. It is applicable in
+                     the domain of application configuration management.
 homepage:            https://github.com/lovasko/sparta
-license:             BSD3
+license:             OtherLicense
 license-file:        LICENSE
 author:              Daniel Lovasko <daniel.lovasko@gmail.com>
 maintainer:          Daniel Lovasko <daniel.lovasko@gmail.com>
-copyright:           2016 Daniel Lovasko
+copyright:           2016-2017 Daniel Lovasko
 category:            Text, Database
 build-type:          Simple
 cabal-version:       >=1.10
@@ -26,10 +29,13 @@ library
                      , text
   default-language:    Haskell2010
 
-executable sparta-cli
+executable sparta
   hs-source-dirs:      src/cli
   main-is:             Main.hs
   build-depends:       base
+                     , optparse-applicative
+                     , comma
+                     , text
                      , sparta
   default-language:    Haskell2010
 
