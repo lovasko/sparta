@@ -1,8 +1,8 @@
 {- |
 Module      : Sparta
-Description : Sparse table database
-Copyright   : (c) Daniel Lovasko, 2016
-License     : BSD3
+Description : Sparse table query engine
+Copyright   : (c) 2016-2017 Daniel Lovasko
+License     : BSD2
 
 Maintainer  : Daniel Lovasko <daniel.lovasko@gmail.com>
 Stability   : stable
