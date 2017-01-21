@@ -32,6 +32,7 @@ library
 executable sparta
   hs-source-dirs:      src/cli
   main-is:             Main.hs
+  other-modules:       Options
   build-depends:       base
                      , optparse-applicative
                      , comma
