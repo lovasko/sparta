@@ -23,8 +23,8 @@ API of the project.
 module Sparta
 ( Query  -- *
 , Table  -- *
-, build  -- [[T.Text]] -> Either T.Text Table
-, search -- Table -> Query -> Either T.Text [[T.Text]]
+, build  -- [[T.Text]] -> Either String Table
+, search -- Table -> Query -> Either String [[T.Text]]
 ) where
 
 import Sparta.Build

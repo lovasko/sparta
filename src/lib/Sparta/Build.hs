@@ -14,8 +14,6 @@ function favors cells without any wild-cards, as they are most likely to
 filter out most entries.
 -}
 
-{-# LANGUAGE OverloadedStrings #-}
-
 module Sparta.Build
 ( build
 ) where
@@ -31,7 +29,7 @@ import Sparta.Types
 
 -- | Build a table from textual data.
 build :: [[T.Text]]          -- ^ cells
-      -> Either T.Text Table -- ^ error message | table
+      -> Either String Table -- ^ error message | table
 build []   = Left "No rows provided"
 build [[]] = Right []
 build cells

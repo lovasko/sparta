@@ -14,8 +14,6 @@ use of the fact that the columns sorted ascendingly by complexity and
 therefore evalues the query in that order.
 -}
 
-{-# LANGUAGE OverloadedStrings #-}
-
 module Sparta.Search
 ( search
 ) where
@@ -32,7 +30,7 @@ import Sparta.Types
 -- | Search in the table given a list of query keys.
 search :: Table                    -- ^ table
        -> Query                    -- ^ query
-       -> Either T.Text [[T.Text]] -- ^ results
+       -> Either String [[T.Text]] -- ^ results
 search _    [] = Left "Empty query"
 search table query
   | outOfRange = Left "Query indices out of range"
