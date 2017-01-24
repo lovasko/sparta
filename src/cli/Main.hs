@@ -1,11 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Data.Maybe
-import Options.Applicative
+import Data.Monoid
 import System.Exit
 import Text.Comma
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
+import qualified Options.Applicative as O
 import qualified Sparta as S
 
 import Options
@@ -25,10 +26,10 @@ columnNames hdrs len = zip keys [0..len-1]
 splitQuery :: T.Text           -- ^ query
            -> (T.Text, T.Text) -- ^ column & value
 splitQuery query
-  | length parts > 2  = (head parts, T.intercalate "=" (tail parts))
+  | length parts >= 2  = (head parts, T.intercalate "=" (tail parts))
   | length parts == 1 = (head parts, T.empty)
   | otherwise         = (T.empty, T.empty)
-  where parts = T.split (== '=') query 
+  where parts = T.split (== '=') query
 
 -- | Parse a single query argument.
 parseQuery :: [(T.Text, Int)]             -- ^ column header dictionary
@@ -43,17 +44,17 @@ parseQuery dict query
   | otherwise            = Right (fromJust idx, val)
   where
     (col, val) = splitQuery query
-    idx        = lookup dict col
+    idx        = lookup col dict
 
 -- | Perform a table search based on the command-line options.
 search :: Options                  -- ^ command-line options
        -> S.Table                  -- ^ table
        -> Either String [[T.Text]] -- ^ error | result
-search options table = S.search table queries
+search options table = sequence queries >>= S.search table
   where
     queries = map (parseQuery columns) (optQueries options)
     columns = columnNames headers (length $ head table)
-    headers = if optNoHeader options then Nothing else Just (head table)
+    headers = if optNoHeader options then Nothing else S.headers table
 
 -- | Read the input file text. In case that no file was specified, the 
 -- standard input is used.
@@ -66,8 +67,8 @@ getInput options = case optFile options of
 -- | Sparse table query engine.
 main :: IO ()
 main = do
-  options <- execParser Options.parser
+  options <- O.execParser Options.parser
   input   <- getInput options
-  case comma input >>= S.build >>= search of
+  case comma input >>= S.build >>= search options of
     Left err  -> T.putStrLn ("ERROR: " <> T.pack err) >> exitFailure
     Right res -> T.putStrLn (uncomma res)             >> exitSuccess
