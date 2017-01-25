@@ -26,7 +26,7 @@ columnNames hdrs len = zip keys [1..len]
 splitQuery :: T.Text           -- ^ query
            -> (T.Text, T.Text) -- ^ column & value
 splitQuery query
-  | length parts >= 2  = (head parts, T.intercalate "=" (tail parts))
+  | length parts >= 2 = (head parts, T.intercalate "=" (tail parts))
   | length parts == 1 = (head parts, T.empty)
   | otherwise         = (T.empty, T.empty)
   where parts = T.split (== '=') query
