@@ -40,7 +40,7 @@ build cells
     cols2   = foldr (zipWith append) cols1 cells      -- append cells
     cols3   = rateSort $ zip [1..] cols2              -- sort by complexity
     same xs = and $ zipWith (==) xs (tail xs)
-    append  = flip (S.|>) . tokenize
+    append  = (S.<|) . tokenize
 
 -- | Return columns sorted by the complexity of each. The higher the rate,
 -- the more broader the domain set of the tokens is. Constants used in
