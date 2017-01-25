@@ -65,7 +65,7 @@ build opts table
   | length table == 1 = Left "Table contains only headers"
   | otherwise         = Left "Table has no headers"
 
--- | Read the input file text. In case that no file was specified, the 
+-- | Read the input file text. In case that no file was specified, the
 -- standard input is used.
 getInput :: Options   -- ^ command-line options
          -> IO T.Text -- ^ input
