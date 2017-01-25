@@ -17,8 +17,8 @@ import Options
 columnNames :: Maybe [T.Text]   -- ^ table headers
             -> Int              -- ^ column count
             -> [(T.Text,  Int)] -- ^ column header dictionary
-columnNames hdrs len = zip keys [0..len-1]
-  where keys = fromMaybe (map (T.pack . show) [0..len-1]) hdrs
+columnNames hdrs len = zip keys [1..len]
+  where keys = fromMaybe (map (T.pack . show) [1..len]) hdrs
 
 -- | Split the full query string into the column and value parts based on the
 -- position of the '=' character. The first occurrence of '=' is used as the
