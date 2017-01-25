@@ -34,6 +34,7 @@ data Token
   = Plain T.Text -- ^ simple plain text
   | Asterisk     -- ^ any number of wild-card characters
   | Question Int -- ^ exact number of wild-card characters
+  deriving (Show)
 
 -- | Table defined as a list of numbered columns.
 type Table = [(Int, Column)]
