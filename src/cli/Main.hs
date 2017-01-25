@@ -47,28 +47,37 @@ parseQuery dict query
     idx        = lookup col dict
 
 -- | Perform a table search based on the command-line options.
-search :: Options                  -- ^ command-line options
-       -> S.Table                  -- ^ table
-       -> Either String [[T.Text]] -- ^ error | result
-search options table = sequence queries >>= S.search table
+search :: Options                   -- ^ command-line options
+       -> (Maybe [T.Text], S.Table) -- ^ table
+       -> Either String [[T.Text]]  -- ^ error | result
+search opts (headers, table) = sequence queries >>= S.search table
   where
-    queries = map (parseQuery columns) (optQueries options)
-    columns = columnNames headers (length $ head table)
-    headers = if optNoHeader options then Nothing else S.headers table
+    queries = map (parseQuery columns) (optQueries opts)
+    columns = columnNames headers (length table)
+
+-- | Build the query table based on the command-line options.
+build :: Options                                 -- ^ command-line options
+      -> [[T.Text]]                              -- ^ table
+      -> Either String (Maybe [T.Text], S.Table) -- ^ error | headers & table
+build opts table
+  | optNoHeader opts  = fmap ((,) Nothing) (S.build table)
+  | length table >= 2 = fmap ((,) (Just $ head table)) (S.build $ tail table)
+  | length table == 1 = Left "Table contains only headers"
+  | otherwise         = Left "Table has no headers"
 
 -- | Read the input file text. In case that no file was specified, the 
 -- standard input is used.
 getInput :: Options   -- ^ command-line options
          -> IO T.Text -- ^ input
-getInput options = case optFile options of
+getInput opts = case optFile opts of
   Just file -> T.readFile file
   Nothing   -> T.getContents
 
 -- | Sparse table query engine.
 main :: IO ()
 main = do
-  options <- O.execParser Options.parser
-  input   <- getInput options
-  case comma input >>= S.build >>= search options of
+  opts  <- O.execParser Options.parser
+  input <- getInput opts
+  case comma input >>= build opts >>= search opts of
     Left err  -> T.putStrLn ("ERROR: " <> T.pack err) >> exitFailure
-    Right res -> T.putStrLn (uncomma res)             >> exitSuccess
+    Right res -> T.putStr   (uncomma res)             >> exitSuccess
