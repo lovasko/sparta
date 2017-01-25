@@ -18,8 +18,9 @@ module Sparta.Search
 ( search
 ) where
 
-import Data.List (find, nub)
-import Data.Maybe (mapMaybe)
+import Data.Function
+import Data.List
+import Data.Maybe
 import qualified Data.Sequence as S
 import qualified Data.Text as T
 
@@ -40,7 +41,8 @@ search table query
     outOfRange  = any (\i -> i < 0 || i > length table) indices
     duplicates  = length indices /= length (nub indices)
     indices     = map fst query
-    selectRow n = map (textify . flip S.index n . snd) table
+    selectRow n = map (textify . flip S.index n . snd) origColumns
+    origColumns = sortBy (compare `on` fst) table
 
 -- | Match each key over corresponding column and filter out the numbers
 -- of rows that match keys in all columns.
