@@ -40,7 +40,7 @@ parseQuery dict query
   | T.all (/= '=') query = Left "Delimiter '=' missing"
   | T.null col           = Left "No column specified"
   | T.null val           = Left "No value specified"
-  | isNothing idx        = Left "No such column"
+  | isNothing idx        = Left $ "No such column '" ++ T.unpack col ++ "'"
   | otherwise            = Right (fromJust idx, val)
   where
     (col, val) = splitQuery query
