@@ -65,19 +65,11 @@ build opts table
   | length table == 1 = Left "Table contains only headers"
   | otherwise         = Left "Table has no headers"
 
--- | Read the input file text. In case that no file was specified, the
--- standard input is used.
-getInput :: Options   -- ^ command-line options
-         -> IO T.Text -- ^ input
-getInput opts = case optFile opts of
-  Just file -> T.readFile file
-  Nothing   -> T.getContents
-
 -- | Sparse table query engine.
 main :: IO ()
 main = do
   opts  <- O.execParser Options.parser
-  input <- getInput opts
+  input <- maybe T.getContents T.readFile (optFile opts)
   case comma input >>= build opts >>= search opts of
     Left err  -> T.putStrLn ("ERROR: " <> T.pack err) >> exitFailure
     Right res -> T.putStr   (uncomma res)             >> exitSuccess
