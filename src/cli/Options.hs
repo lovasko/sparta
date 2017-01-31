@@ -29,7 +29,7 @@ parseNoHeader :: Parser Bool -- ^ parser
 parseNoHeader = switch
    $ short   'n'
   <> long    "no-header"
-  <> help    "Input table does not contain header line"
+  <> help    "Header-less input table (column names are 1, 2, ...)"
 
 -- | Command-line user interface.
 optionsParser :: Parser Options -- ^ parser
