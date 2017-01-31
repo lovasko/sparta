@@ -23,4 +23,3 @@ install:
 
 script:
 - stack build --pedantic --haddock
-
