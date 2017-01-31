@@ -47,15 +47,17 @@ parseQuery dict query
     idx        = lookup col dict
 
 -- | Perform a table search based on the command-line options.
-search :: Options                   -- ^ command-line options
-       -> (Maybe [T.Text], S.Table) -- ^ table
-       -> Either String [[T.Text]]  -- ^ error | result
-search opts (headers, table) = sequence queries >>= S.search table
+search :: Options                                    -- ^ command-line options
+       -> (Maybe [T.Text], S.Table)                  -- ^ table
+       -> Either String (Maybe [T.Text], [[T.Text]]) -- ^ error | result
+search opts (headers, table) = fmap ((,) headers) result
   where
+    result  = sequence queries >>= S.search table
     queries = map (parseQuery columns) (optQueries opts)
     columns = columnNames headers (length table)
 
--- | Build the query table based on the command-line options.
+-- | Build the query table based on the command-line options. This function
+-- also separates the header of the table.
 build :: Options                                 -- ^ command-line options
       -> [[T.Text]]                              -- ^ table
       -> Either String (Maybe [T.Text], S.Table) -- ^ error | headers & table
@@ -71,5 +73,5 @@ main = do
   opts  <- O.execParser Options.parser
   input <- maybe T.getContents T.readFile (optFile opts)
   case comma input >>= build opts >>= search opts of
-    Left err  -> T.putStrLn ("ERROR: " <> T.pack err) >> exitFailure
-    Right res -> T.putStr   (uncomma res)             >> exitSuccess
+    Left  err        -> T.putStrLn ("ERROR: " <> T.pack err)      >> exitFailure
+    Right (hdr, res) -> T.putStr (uncomma $ maybe res (:res) hdr) >> exitSuccess
