@@ -41,4 +41,4 @@ optionsParser = Options
 -- | Parser of the command-line options.
 parser :: ParserInfo Options -- ^ parser
 parser = info (helper <*> optionsParser) (header desc <> fullDesc)
-  where desc = "sparta - sparse table query engine"
+  where desc = "sparta - sparse table query engine operating on CSV files"
