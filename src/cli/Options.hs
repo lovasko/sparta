@@ -18,7 +18,7 @@ parseFile = optional $ strArgument (metavar "FILE")
 
 -- | Query option.
 parseQueries :: Parser [T.Text] -- ^ parser
-parseQueries = fmap (map T.pack) $ many $ strOption
+parseQueries = fmap (map T.pack) $ some $ strOption
    $ short   'q'
   <> long    "query"
   <> metavar "COLUMN:QUERY"
