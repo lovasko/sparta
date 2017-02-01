@@ -8,9 +8,9 @@ import qualified Data.Text as T
 
 -- | Command-line options.
 data Options = Options
-  { optFile     :: Maybe String
+  { optNoHeader :: Bool
   , optQueries  :: [T.Text]
-  , optNoHeader :: Bool }
+  , optFile     :: Maybe String }
 
 -- | Table data file option.
 parseFile :: Parser (Maybe String) -- ^ parser
@@ -34,9 +34,9 @@ parseNoHeader = switch
 -- | Command-line user interface.
 optionsParser :: Parser Options -- ^ parser
 optionsParser = Options
-  <$> parseFile
+  <$> parseNoHeader
   <*> parseQueries
-  <*> parseNoHeader
+  <*> parseFile
 
 -- | Parser of the command-line options.
 parser :: ParserInfo Options -- ^ parser
