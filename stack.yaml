@@ -2,7 +2,7 @@ resolver: lts-7.14
 packages:
 - '.'
 extra-deps:
-- comma-1.0.1
+- comma-1.1.0
 flags: {}
 extra-package-dbs: []
 
