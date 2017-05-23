@@ -21,7 +21,7 @@ parseQueries :: Parser [T.Text] -- ^ parser
 parseQueries = fmap (map T.pack) $ some $ strOption
    $ short   'q'
   <> long    "query"
-  <> metavar "COLUMN:QUERY"
+  <> metavar "COLUMN=QUERY"
   <> help    "Query for the table data"
 
 -- | No CSV header line option.
